@@ -1,4 +1,2 @@
 # ST1_Capstone_Final#
-#Mean Squared Error: 0.11450625215156787#
-#Mean Absolute Error: 0.2254835940247221#
-#R-squared: 0.9996326141594112#
+#This is my Capstone Project for Software Technology 1 at the University of Canberra. This project uses data analysis software to read a .csv file containing gold prices over several years. Each numbered question in this repository answers its corresponding question in the assignment with relevant code#

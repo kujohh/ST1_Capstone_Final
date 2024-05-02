@@ -1,0 +1,110 @@
+#GUI DEPLOYMENT
+#Deployment of Polynomial Regression Algorithm via GUI#
+
+import tkinter as tk
+from tkinter import filedialog, messagebox
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+class GoldPricePredictorApp:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Regression Model Assesor and Model Printer")
+
+        # Header
+        header_label = tk.Label(self.master, text="Regression Model Assesor and Model Printer", font=('Helvetica', 16, 'bold'))
+        header_label.grid(row=0, column=0, columnspan=4)
+        
+        # Load CSV Button
+        load_csv_button = tk.Button(self.master, text="Load CSV", command=self.load_csv)
+        load_csv_button.grid(row=1, column=0, pady=5)
+
+        # Select Prefix
+        prefix_label = tk.Label(self.master, text="Select Prefix:")
+        prefix_label.grid(row=1, column=1, pady=5)
+        self.prefix_var = tk.StringVar(self.master)
+        self.prefix_var.set("base")
+        prefix_options = ["base", "SP", "DJ", "EG","OF", "OS"]
+        prefix_menu = tk.OptionMenu(self.master, self.prefix_var, *prefix_options, command=self.update_columns)
+        prefix_menu.grid(row=1, column=2, pady=5)
+
+        generate_button = tk.Button(self.master, text="Generate", command=self.generate)
+        generate_button.grid(row=1, column=3, pady=5)
+
+        self.metrics_label = tk.Label(self.master, text="")
+        self.metrics_label.grid(row=2, column=0, columnspan=4, pady=5)
+
+        # Plot
+        self.fig, self.ax = plt.subplots()
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
+        self.canvas.get_tk_widget().grid(row=3, column=0, columnspan=4, pady=5)
+
+        # Data
+        self.data = None
+        self.prefix_columns = {"base": ["Open", "High", "Low", "Close"],
+                               "SP": ["SP_open", "SP_high", "SP_low", "SP_close"],
+                               "DJ": ["DJ_open", "DJ_high", "DJ_low", "DJ_close"],
+                               "EG": ["EG_open", "EG_high", "EG_low", "EG_close"],
+                               "OF": ["OF_Open", "OF_High", "OF_Low", "OF_Price"],
+                               "OS": ["OS_Open", "OS_High", "OS_Low", "OS_Price"]}
+        self.selected_prefix = "base"
+        self.selected_columns = self.prefix_columns["base"]
+
+    def load_csv(self):
+        filename = filedialog.askopenfilename(initialdir="/", title="Select file",
+                                               filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
+        if filename:
+            self.data = pd.read_csv(filename)
+            messagebox.showinfo("Success", "CSV file loaded successfully.")
+        else:
+            messagebox.showerror("Error", "No file selected.")
+
+    def update_columns(self, selected_prefix):
+        self.selected_prefix = selected_prefix
+        self.selected_columns = self.prefix_columns[selected_prefix]
+
+    def generate(self):
+        if self.data is None:
+            messagebox.showerror("Error", "Please load a CSV file first.")
+            return
+
+    #Machined Code
+        X = self.data[self.selected_columns[:-1]]
+        y = self.data[self.selected_columns[-1]]
+    #Split Test
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=35)
+
+        poly_features = PolynomialFeatures(degree=3)
+        X_train_poly = poly_features.fit_transform(X_train)
+        X_test_poly = poly_features.transform(X_test)
+
+        model = LinearRegression()
+        model.fit(X_train_poly, y_train)
+
+        y_pred = model.predict(X_test_poly)
+
+        mae = mean_absolute_error(y_test, y_pred)
+        mse = mean_squared_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
+
+        self.metrics_label.config(text=f"MAE: {mae:.2f}, MSE: {mse:.2f}, R-squared: {r2:.2f}")
+
+        self.ax.clear()
+        self.ax.scatter(y_test, y_pred)
+        self.ax.set_xlabel('True Values')
+        self.ax.set_ylabel('Predictions')
+        self.ax.set_title('Gold Price Prediction')
+        self.canvas.draw()
+
+def main():
+    root = tk.Tk()
+    app = GoldPricePredictorApp(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()

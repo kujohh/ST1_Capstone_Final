@@ -1,0 +1,13 @@
+#QUESTION 8
+#producing a pairplot diagram to better visualise data and outliers#
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+df=pd.read_csv('gold_price.csv')
+columns=['High','Low','Open','Close']
+sns.pairplot(df[columns])
+plt.show()
+
+#Since the target is Close. Open, High and Low are the selected features#
+#Volume will not be considered since it adds too much variation to the machine learning models#

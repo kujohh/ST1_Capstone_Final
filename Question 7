@@ -1,0 +1,45 @@
+#QUESTION 7#
+
+#histogram
+#produces Close price histogram
+
+import pandas as pd 
+import matplotlib.pyplot as plt
+df=pd.read_csv('gold_price.csv')
+plt.figure(figsize=(15,10))
+plt.title('Gold Price Histogram')
+plt.xlabel('Gold Close Price')
+plt.ylabel('Frequency')
+plt.hist(df['Close'], bins =50, color='pink',edgecolor='black')
+plt.show()
+
+#barchart
+#produces Low price barchart
+
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv('gold_price.csv')
+price_low = df['Low'].value_counts()
+plt.figure(figsize=(15,5))
+plt.title('Gold Price Bar Plot')
+plt.xlabel('Gold Close Price')
+plt.ylabel('Frequency')
+plt.bar(price_low.index, price_low.values, color='blue', width=0.05, label='Low Price')
+plt.xticks(range(int(price_counts.index.min()), int(price_counts.index.max())+1, 5))
+plt.legend()
+plt.show()
+
+#produces High price bar chart
+
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv('gold_price.csv')
+price_high = df['High'].value_counts()
+plt.figure(figsize=(15,5))
+plt.title('Gold Price Bar Plot')
+plt.xlabel('Gold Close Price')
+plt.ylabel('Frequency')
+plt.bar(price_high.index, price_high.values, color='green', width=0.05, label='Low Price')
+plt.xticks(range(int(price_counts.index.min()), int(price_counts.index.max())+1, 5))
+plt.legend()
+plt.show()

@@ -17,7 +17,7 @@ class GoldPricePredictorApp:
         self.master.title("Regression Model Assesor and Model Printer")
 
         # Header
-        header_label = tk.Label(self.master, text="Regression Model Assesor and Model Printer", font=('Helvetica', 16, 'bold'))
+        header_label = tk.Label(self.master, text="Regression Model Assesor and Model Printer", font=('Arial', 15, 'bold'))
         header_label.grid(row=0, column=0, columnspan=4)
         
         # Load CSV Button

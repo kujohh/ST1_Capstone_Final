@@ -1,0 +1,33 @@
+#QUESTION 4#
+
+#Prints Plot Line Diagram For Closing Price#
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+df=pd.read_csv('gold_price.csv')
+df['Date'] = pd.to_datetime(df['Date'])
+df.set_index('Date',inplace=True)
+df['Close'].plot(kind='line',figsize=(15,10),color='pink')
+plt.xticks(df.index[::50],rotation=45)
+plt.xlabel('Date')
+plt.ylabel('Close')
+plt.title('Close Price Over Time')
+plt.show()
+
+#Prints Plot Line Diagram For High and Low Price#
+
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+df=pd.read_csv('gold_price.csv')
+df['Date'] = pd.to_datetime(df['Date'])
+df.set_index('Date',inplace=True)
+df['High'].plot(kind='line',figsize=(15,10),color='green')
+df['Low'].plot(kind='line',figsize=(15,10),color='red')
+plt.xticks(df.index[::50],rotation=45)
+plt.xlabel('Date')
+plt.ylabel('Price')
+plt.title('High and Low Prices of Gold Over Time')
+
+plt.legend()
+plt.show()

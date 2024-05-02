@@ -1,0 +1,11 @@
+#QUESTION 5
+
+#Basic Data Exploration
+
+import pandas as pd 
+
+df=pd.read_csv('gold_price.csv')
+print(df.info())
+print(df.describe())
+print('duplicate rows:',
+      df.duplicated().sum())

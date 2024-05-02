@@ -1,4 +1,4 @@
-#QUESTION 1#
+#QUESTION 1
 import pandas as pd 
 df = pd.read_csv('gold_price.csv')
 print(df.iloc[:,:5])

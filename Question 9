@@ -1,0 +1,30 @@
+#QUESTION 9
+#Removal of Outliers Visualised as a Pairplot Diagram
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+df = pd.read_csv('gold_price.csv')
+X = df[['Open', 'High', 'Low']]
+Y = df['Close']
+
+model = LinearRegression()
+model.fit(X, Y)
+
+predicted_Y = model.predict(X)
+
+absolute_diff = np.abs(Y - predicted_Y)
+outlier_threshold = 0.25
+outliers = absolute_diff > outlier_threshold
+
+clean_X = X[~outliers]
+clean_Y = Y[~outliers]
+
+cleaned_model = LinearRegression()
+cleaned_model.fit(clean_X, clean_Y)
+
+clean_df = pd.concat([clean_X, clean_Y], axis=1)
+sns.pairplot(clean_df)
+plt.show()
